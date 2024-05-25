@@ -85,15 +85,21 @@ class AuthorForm(forms.ModelForm):
 class CatalogForm(forms.ModelForm):
     class Meta:
         model = Catalog
-        fields = ('category', 'catalog_title', 'details', 'price',  'quantity', 'unit', 'photo')
+        fields = ('category', 'author', 'catalog_title', 'details', 'price',  'quantity', 'unit', 'photo')
         widgets = {
             'category': forms.Select(attrs={'class': 'chosen'}),
+            'author': forms.Select(attrs={'class': 'chosen'}),
             'catalog_title': TextInput(attrs={"size":"100"}),
             'details': Textarea(attrs={'cols': 100, 'rows': 5}),            
             'price': NumberInput(attrs={"size":"10", "min": "1", "step": "1"}),
             'quantity': NumberInput(attrs={"size":"10", "min": "1", "max": "10000", "step": "1"}), 
             'unit': TextInput(attrs={"size":"50"}),            
         }
+        labels = {
+            'category': _('category_title'),            
+            'author': _('author_name'),            
+        }
+
     # Метод-валидатор для поля price
     def clean_price(self):
         data = self.cleaned_data['price']
