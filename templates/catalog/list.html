@@ -131,9 +131,9 @@
 					{% endif %}
 				</div>
 				<div class="col-md-3">
-					<!-- <p>{{ c.details | linebreaks}}</p> -->
-					
+					<!-- <p>{{ c.details | linebreaks}}</p> -->					
 					<h4>{{ c.price | stringformat:"1.0f" }} ₽</h4>	
+					{% if user.is_authenticated %}
 					<form method="post">
 						{% csrf_token %}
 						<button type="submit" name="btn{{ c.id }}" id="btn_id{{ c.id }}" class="btn btn-outline-success" >{% trans "Add to basket" %}</button>
@@ -141,6 +141,7 @@
 						<input hidden type="text" name="price" size="0" value="{{ c.price }}">
 						<input hidden type="text" name="user" size="0" value="{{ user.id }}">
 					</form>
+					{% endif %}
 				</div>				
 			</div>
 		</div>
