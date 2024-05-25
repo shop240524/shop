@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-ejsdm33$wh6o7sxqo)pws9i_-kb9t6=x5=4$f^w9n9v1u@52mg
 DEBUG = False
 #DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'shop-book.onrender.com',]
+ALLOWED_HOSTS = ['127.0.0.1', 'shop-book-xes4.onrender.com',]
 
 # Application definition
 
@@ -91,10 +91,10 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': BASE_DIR / 'db.sqlite3',
+    #}
 
     #'default': {
     #    'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -105,14 +105,14 @@ DATABASES = {
     #    'PORT' : '5432',
     #}
     
-    #'default': {
-	   # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-	   # 'NAME': 'shop_7gix',
-	   # 'USER' : 'shop_admin',
-	   # 'PASSWORD' : 'iim7An34Ko6ZBGjaLmJ0Qlfe8SdbahPI',
-	   # 'HOST' : 'dpg-colrtlgl5elc73bojg10-a.frankfurt-postgres.render.com',
-	   # 'PORT' : '5432',
-    #}
+    'default': {
+	    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+	    'NAME': 'shop_wbrj',
+	    'USER' : 'shop_admin',
+	    'PASSWORD' : 'JWGBRPsATYhEYu1yv5gYdfYA475gBH2L',
+	    'HOST' : 'dpg-cp8kgm7109ks739sk490-a.frankfurt-postgres.render.com',
+	    'PORT' : '5432',
+    }
 
 }
 
