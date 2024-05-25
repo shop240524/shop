@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}{% trans 'App Name' %}{% endblock title %}
+{% block content %}
+<div class="row justify-content-center">
+	<div class="col-lg-8 col-md-10 col-sm-12">
+		<div class="card">
+			<div class="card-body">
+				<h1>
+					{% if LANGUAGE_CODE == 'kk' %}
+						Қош келдіңіз,
+					{% elif LANGUAGE_CODE == 'en' %}
+						Welcome,
+					{% else %}
+						Добро пожаловать,
+					{% endif %}
+					{{ new_user.first_name }}!
+				</h1>
+				<p>
+					{% if LANGUAGE_CODE == 'kk' %}
+						Есептік жазбаңыз сәтті жасалды.
+					{% elif LANGUAGE_CODE == 'en' %}
+						Your account has been successfully created.
+					{% else %}
+						Ваша учетная запись успешно создана.
+					{% endif %}
+					<a href="{% url 'login' %}">
+						{% if LANGUAGE_CODE == 'kk' %}
+							Кіру
+						{% elif LANGUAGE_CODE == 'en' %}
+							Log in
+						{% else %}
+							Войти
+						{% endif %}
+					</a>.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content%}

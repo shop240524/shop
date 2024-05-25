@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "catalogs" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<div class="row justify-content-center">
+	<div class="card" style="width:100%">
+		<div class="card-header">
+			<h4>{{ invoice.organization }}</h4>
+		</div>
+		<div class="card-body">
+			<p>{{ invoice.datei | date:"d.m.Y" }}</p>
+			<p>{% trans "numb" %}: {{ invoice.numb }}</p>
+		</div>
+		<div class="card-footer">
+		</div>
+	</div>
+	<div class="div-button-center">		
+	</div>
+</div>
+<div id="print_content">
+	<h2>{% trans "catalogs" %}</h2>
+	<p><a href="{% url 'catalog_create' invoice_id%}">{% trans "Add" %}</a></p>					
+	<hr>
+	{% if catalog.count > 0 %}
+	<div class="row">
+		<table id="myTable" class="table-manager" style="width:100%; margin: 10px">
+			<thead>
+				<tr>
+					<th><p>{% trans "catalog_category" %}</p></th>
+					<th><p>{% trans "author_name" %}</p></th>
+					<th><p>{% trans "catalog_title" %}</p></th>
+					<th><p>{% trans "price" %}</p></th>
+					<th><p>{% trans "quantity" %}</p></th>					
+					<th><p></p></th>					
+				</tr>
+			</thead>
+			<tbody>
+				{% for p in catalog %}
+				<tr>		
+					<td>
+						<p>{{ p.category }}</p>
+					</td>
+					<td>
+						<p>{{ p.author }}</p>
+					</td>		
+					<td>
+						<p>{{ p.catalog_title }}</p>
+					</td>					
+					<td>
+						<p>{{ p.price | stringformat:"1.0f" }} ₽</p>
+					</td>
+					<td>
+						<p>{{ p.quantity }} {{ p.unit }}</p>
+					</td>
+
+					<td>
+						<p>
+							<a href="{% url 'catalog_edit' p.id invoice_id %}">{% trans "Change" %}</a> |
+							<a href="{% url 'catalog_read' p.id invoice_id %}">{% trans "View" %}</a> |
+							<a onclick="return confirm('Удалить запись?')" href="{% url 'catalog_delete' p.id invoice_id %}">{% trans "Delete" %}</a>
+						</p>
+					</td>	
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% endif %}
+</div>
+{% endblock content %}
+

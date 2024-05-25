@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "newss" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<h2>{% trans "newss" %}</h2>
+<p><a href="{% url 'news_create'%}">{% trans "Add" %}</a></p>
+<hr>
+{% if news.count > 0 %}
+<table id="myTable" class="table-manager" style="width:100%">
+	<thead>
+		<tr>
+			<th><p>{% trans "daten" %}</p></th>
+			<th><p>{% trans "news_title" %}</p></th>
+			<th><p></p></th>				
+		</tr>
+	</thead>
+	<tbody>
+		{% for n in news %}
+		<tr>
+			<td>
+				<p>{{ n.daten | date:"d.m.Y H:i"}}</p>
+			</td>
+			<td>
+				<p>{{ n.news_title }}</p>						
+			</td>
+			<td>
+				<p>
+				<a href="{% url 'news_edit' n.id %}">{% trans "Change" %}</a> 
+				<a href="{% url 'news_read' n.id %}">{% trans "View" %}</a> 
+				<a onclick="return confirm('Удалить запись?')" href="{% url 'news_delete' n.id %}">{% trans "Delete" %}</a>
+				</p>
+			</td>			
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endif %}
+{% endblock content %}
+

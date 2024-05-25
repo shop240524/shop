@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}{% trans 'App Name' %}{% endblock title %}
+{% block content %}
+{% if form.errors %}
+	<p>
+		{% if LANGUAGE_CODE == 'kk' %}
+			Логин немесе құпия сөз қате
+		{% elif LANGUAGE_CODE == 'en' %}
+			Incorrect login or password
+		{% else %}
+			Неверный логин или пароль
+		{% endif %}
+	</p>
+{% endif %}
+{% if next %}
+	{% if user.is_authenticated %}
+		<p>
+			{% if LANGUAGE_CODE == 'kk' %}
+				Сізде рұқсат жоқ
+			{% elif LANGUAGE_CODE == 'en' %}
+				You don't have access
+			{% else %}
+				У вас нет доступа
+			{% endif %}
+		</p>
+	{% else %}
+		<p>
+			{% if LANGUAGE_CODE == 'kk' %}
+				Бұл бетті көру үшін жүйеге кіріңіз
+			{% elif LANGUAGE_CODE == 'en' %}
+				Login to see this page
+			{% else %}
+				Войдите, чтобы увидеть эту страницу
+			{% endif %}
+		</p>
+	{% endif %}
+{% endif %}
+
+<div class="row justify-content-center">
+	<div class="col-lg-8 col-md-10 col-sm-12">
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title">
+					{% if LANGUAGE_CODE == 'kk' %}
+						Авторизация
+					{% elif LANGUAGE_CODE == 'en' %}
+						Authorization
+					{% else %}
+						Авторизация
+					{% endif %}
+				</h4>
+				<form method="post">
+					{% csrf_token %}
+					{{ form|crispy }}
+					<div class="div-button-center">
+						<button type="submit" class="btn btn-primary btn-block">
+							{% if LANGUAGE_CODE == 'kk' %}
+								Кіру
+							{% elif LANGUAGE_CODE == 'en' %}
+								Login
+							{% else %}
+								Вход
+							{% endif %}
+						</button>
+					</div>
+				</form>
+			</div>
+			<div class="card-footer text-muted text-center">
+				{# Assumes you setup the password_reset view in your URLconf #}
+				<p><a href="{% url 'password_reset' %}">
+					{% if LANGUAGE_CODE == 'kk' %}
+						Құпия сөзді жоғалттыңыз ба?
+					{% elif LANGUAGE_CODE == 'en' %}
+						Lost password?
+					{% else %}
+						Забыли пароль?
+					{% endif %}
+				</a></p>
+				<p><a href="{% url 'signup' %}">
+					{% if LANGUAGE_CODE == 'kk' %}
+						Аккаунты құру
+					{% elif LANGUAGE_CODE == 'en' %}
+						Create an account
+					{% else %}
+						Регистрация
+					{% endif %}
+				</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content%}

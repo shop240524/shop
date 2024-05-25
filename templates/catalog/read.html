@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "View" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<div class="row justify-content-center">
+	<div class="card" style="width:100%">
+		<div class="card-header">
+			<h5>{{ catalog.category }}</h5>
+			<h4 class="card-title">{{ catalog.author }}</h4>		
+			<h4 class="card-title">{{ catalog.catalog_title }}</h4>		
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-3">
+					{% if catalog.photo.url != None %}
+						<img class="img-center2" src="{{ catalog.photo.url}}" alt="{{ catalog.photo.url }}">
+					{% endif %}
+					<p><div class="Stars" style='--rating: {{ catalog.avg_rating| stringformat:".1f" }};'></div></p>												
+				</div>
+				<div class="col-md-9">
+					<p>{{ catalog.details | linebreaks}}</p>
+					<h4>{{ catalog.price | stringformat:"1.0f" }} ₽</h4>	
+				</div>				
+			</div>
+		</div>
+		<div class="card-footer">
+			<h6>{% trans "quantity" %}: {{ catalog.quantity }} {{ catalog.u }}</h6>			
+		</div>
+	</div>
+	<div class="div-button-center">
+		<a class="btn btn-outline-info" style="width:120px" href="{% url 'catalog_index' invoice_id %}">{% trans "Back" %}</a> 	
+	</div>
+</div>
+{% endblock content %}

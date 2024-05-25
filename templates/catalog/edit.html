@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Change" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<h2>{% trans "catalog" %}</h2>
+<form method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+	<div class="div-button-center">
+		<button type="submit" class="btn btn-outline-success" style="width:120px">{% trans "Save" %}</button>	
+		<!-- <a class="btn btn-outline-info" style="width:120px" href="{% url 'catalog_index' invoice_id%}}">{% trans "Back" %}</a> 	 -->
+		<a class="btn btn-outline-info" style="width:120px" onclick="history.back();">{% trans "Back" %}</a>    	
+	</div>	
+</form>
+<script type="text/javascript">
+	$(".chosen").chosen();
+</script>
+{% endblock content %}

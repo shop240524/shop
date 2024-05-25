@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "App Name" %}{% endblock title %}
+{% block header %}
+
+{% endblock header %}
+{% block content %}
+<div class="div-width-100-text-center">
+	<h3>Букватория</h3>
+</div>
+
+<div class="row">
+	<div class="col-md-9">
+		<p>Книжная торговая сеть «Букватория» - новое имя белгородской книготорговой сети «Книголюб», основанной в 2004 году.</p>
+		<p>Основными приоритетами нашей работы являются:</p>
+		<ul>
+			<li>разнообразие ассортимента – от популярной литературы до редких изданий и книг для интеллектуальной аудитории.</li>
+			<li>оперативность в поступлении новинок и лидеров продаж, а также в выполнении заказов на выгодных условиях.</li>
+			<li>индивидуальный подход к каждому покупателю, качество обслуживания.</li>
+			<li>доступные цены.</li>
+		</ul>
+		<p>Партнерство с известными и небольшими издательствами, крупными книготорговыми компаниями и авторами-издателями  позволяет представить наиболее интересные издания книжного рынка России и ближнего зарубежья. Книги по истории, философии и психологии, литературоведению и искусствоведению, литература по Белогорью и книги белгородских авторов, методические пособия и подарочные альбомы, – всё это Вы можете найти на наших полках наряду с книгами широкого спроса. При оформлении заказа Вы можете получить необходимую информацию об издании, его внешнем виде и характеристиках. Наш ассортимент постоянно обновляется, при этом внимание уделяется как полиграфическому оформлению, так и содержанию предлагаемых изданий.</p>
+		<p>Торговая сеть «Букватория» открыта для сотрудничества с новыми издательствами и поставщиками.</p>
+	</div>
+	<div class="col-md-3" style="position:relative;overflow:hidden;">
+		<br>
+		<a href="http://bukvatoria.ru"><img src="{% static 'images/logo.svg' %}" alt="logo" style="width: 100%;"></a>
+		<div><a href="tel:Интернет-магазин +7(951) 143-04-04">Интернет-магазин +7(951) 143-04-04</a></div>
+		<div><a href="tel:Viber/WhatsApp +79511430404">Viber/WhatsApp +79511430404</a></div>
+		<div><a href="tel:zakazbuk@gmail.com">zakazbuk@gmail.com</a></div>
+	</div>
+</div>
+<!-- Каталог -->
+<hr>
+<div class="div-width-100-text-center">
+	<h3>{% trans "Catalog list" %}</h3>
+</div>
+<section id="catalog">
+	<div class="row">
+		{% if catalog.count > 0 %}
+			{% for c in catalog %}
+			<div class="col-lg-3">
+				{% if c.photo.url != None %}					
+					<img style="height:200px; max-width:200px;" src="{{ c.photo.url}}" alt="{{ c.title }}" >
+				{% endif %}
+				<h4><a href="{% url 'catalog_details' c.id %}">{{ c.catalog_title }}</a></h4>
+				<h5>{{ c.price }} ₽</h5>					
+				{% if c.avg_rating != None %}
+				<p><div class="Stars" style='--rating: {{ c.avg_rating| stringformat:".1f" }};'></div></p>							
+				<!-- <h6>{% trans "Avg Rating" %}: {{ c.avg_rating | floatformat:1 }}</h6>								 -->
+				{% endif %}
+			</div>
+			{% endfor %}
+		{% endif %}						
+	</div>
+	<h3 style="text-align: center;" ><a href="{% url 'catalog_list' %}">{% trans "Full Catalog" %}</a></h3>
+</section>
+	
+<!-- Отзывы -->
+<!-- <hr>	 -->
+<!-- <div class="div-width-100-text-center"> -->
+	<!-- <h3>{% trans "reviews" %}</h3> -->
+<!-- </div> -->
+<!-- <section id="review"> -->
+	<!-- <div class="row"> -->
+		<!-- {% if review.count > 0 %} -->
+			<!-- {% for r in review %} -->
+				<!-- <div class="col-lg-3"> -->
+					<!-- <h6> {{ r.username }}</h6> -->
+					<!-- <h5><a href="{% url 'catalog_details' r.catalog_id %}">{{ r.title }}</a></h5> -->
+					<!-- <!-- <h6>{% trans "rating" %} {{ r.rating }}</h6> --> -->
+					<!-- <p><div class="Stars" style='--rating: {{ r.rating| stringformat:".1f" }};'></div></p>													 -->
+					<!-- <blockquote>{{ r.details | slice:"0:100" }}...</blockquote>									 -->
+				<!-- </div> -->
+			<!-- {% endfor %} -->
+		<!-- {% endif %}						 -->
+	<!-- </div> -->
+<!-- </section> -->
+
+<div class="jumbotron">
+	<div class="div-width-100-text-center">
+		<h3>{% trans "newss" %}</h3>
+	</div>
+	<hr class="my-4">
+	<div class="row">
+		{% if news1.count > 0 %}
+		<div class="col-lg-8 border">
+			{% for c in news1 %}
+				<center><p><strong>{{ c.daten | date:"d.m.Y H:i" }}</strong></p></center>
+				{% if c.photo.url != None %}
+					<img class="img-center" src="{{ c.photo.url}}" alt="{{ c.photo.url }}" >
+				{% endif %}
+				<h4><a href="{% url 'news_read' c.id %}">{{ c.news_title }}</a></h4>
+				<p>{{ c.details | linebreaks}}</p>
+			{% endfor %}
+		</div>
+		<div class="col-lg-4 border">
+			{% if news24.count > 0 %}
+				{% for c in news24 %}
+				<center><p><strong>{{ c.daten | date:"d.m.Y H:i" }}</strong></p></center>
+				<div class="row">
+					{% if c.photo.url != None %}
+						<img class="img-center3" src="{{ c.photo.url}}" alt="{{ c.photo.url }}">
+					{% endif %}
+				</div>
+				<div class="row">
+					<h5><a href="{% url 'news_read' c.id %}">{{ c.news_title }}</a></h5>
+				</div>
+				<hr class="my-4">
+				{% endfor %}
+			{% endif %}
+		</div>
+		{% endif %}
+	</div>
+	<h3 style="text-align: center;" ><a href="{% url 'news_list' %}">{% trans "all newss" %}</a></h3>
+</div>
+
+{% endblock content %}
+

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Change" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<h2>{% trans "review" %}</h2>
+{{ viewSale }}
+<form method="POST" enctype="multipart/form-data" novalidate>
+	{% csrf_token %}
+	<table>
+		{{ form.as_p }}
+	</table>
+	<div class="div-button-center">
+		<button type="submit" class="btn btn-outline-success" style="width:100px">{% trans "Save" %}</button>
+		<a class="btn btn-outline-info" style="width:100px" href="{% url 'buy' %}">{% trans "Back" %}</a> 
+	</div>
+</form>
+<script type="text/javascript">
+	$(".chosen").chosen();
+</script>
+{% endblock content %}

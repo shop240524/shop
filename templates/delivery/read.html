@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "View" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<h2>{% trans "delivery" %}</h2>
+<div class="row justify-content-center">
+	<div class="card" style="width:100%">
+		<div class="card-header">
+		</div>
+		<div class="card-body">
+			<table>
+				<tr>
+					<td><strong>{% trans "delivery_title" %}</strong>&nbsp:</td>
+					<td>{{ delivery.sale }}</td>
+				</tr>
+				<tr>
+					<td><strong>{% trans "deliveryday" %}</strong>&nbsp:</td>
+					<td>{{ d.deliveryday | date:"d.m.Y H:i" }}</td>
+				</tr>
+				<tr>
+					<td><strong>{% trans "movement" %}</strong>&nbsp:</td>
+					<td>{{ delivery.movement }}</td>
+				</tr>
+				<tr>
+					<td><strong>{% trans "delivery_details" %}</strong>&nbsp:</td>
+					<td>{{ delivery.details | linebreaks }}</td>
+				</tr>
+			</table>
+		</div>
+		<div class="card-footer">
+		</div>
+	</div>
+	<div class="div-button-center">
+		<button onclick="history.back()" class="btn btn-outline-info" style="width:100px">{% trans "Back" %}</button>
+	</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block title %}{% trans 'App Name' %}{% endblock title %}
+{% block content %}
+<p>
+	{% if LANGUAGE_CODE == 'kk' %}
+		Сіз жүйеден шықтыңыз!
+	{% elif LANGUAGE_CODE == 'en' %}
+		Logged out!
+	{% else %}
+		Вы вышли из  учетной записи!
+	{% endif %}
+</p>
+<a href="{% url 'login'%}">
+	{% if LANGUAGE_CODE == 'kk' %}
+		Қайтадан кіріңіз
+	{% elif LANGUAGE_CODE == 'en' %}
+		Login again
+	{% else %}
+		Войти снова
+	{% endif %}
+</a>
+{% endblock %}

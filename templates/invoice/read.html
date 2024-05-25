@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "View" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<h2>{% trans "invoice" %}</h2>
+<div class="row justify-content-center">
+	<div class="card" style="width:100%">
+		<div class="card-header">
+			<h4>{{ invoice.organization }}</h4>
+		</div>
+		<div class="card-body">
+			<p>{{ invoice.datei | date:"d.m.Y" }}</p>
+			<p>{% trans "numb" %}: {{ invoice.numb }}</p>
+		</div>
+		<div class="card-footer">
+		</div>
+	</div>
+	<div class="div-button-center">
+		<button onclick="history.back()" class="btn btn-outline-info" style="width:100px">{% trans "Back" %}</button>
+	</div>
+</div>
+{% endblock content %}

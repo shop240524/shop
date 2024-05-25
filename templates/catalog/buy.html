@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "My purchases" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<h2>{% trans "My purchases" %}</h2>
+{% if sale.count > 0 %}
+{% for s in sale %}
+<div class="row justify-content-center">
+		<div class="card" style="width: 100%; margin-bottom: 10px">
+			<div class="card-header">
+				<h6>{{ s.saleday | date:"d.m.Y"}}</h6>
+				<h5>{{ s.category }}</h5>
+				<h5>{{ s.author }}</h5>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-2">
+						{% if s.photo.url != None %}
+							<img style="width:100%; max-width:200px;" src="{{ s.photo.url}}" >								
+						{% endif %}
+					</div>
+					<div class="col-md-4">
+						<h5 class="card-title">{{ s.catalog_title }}</h5>
+					</div>
+					<div class="col-md-6">
+						<form class="form-vertical" method="post" style="width: 100%" name="reviewForm">
+							{% csrf_token %}
+							<h5 class="card-title"><strong>{{ s.quantity }}ˣ{{ s.price | stringformat:"1.0f" }}</strong> ₽</h5>
+							<h4 class="card-title"><strong>{{ s.total | stringformat:"1.0f"}}</strong> ₽</h4>
+							<input hidden type="text" name="sale_id" size="0" value="{{ s.id }}">
+							<!--<div id="div_review{{ s.id }}" {% if s.rating > 0 %}{% else %} hidden {% endif %} >-->
+							<div id="div_review{{ s.id }}" >
+								<div class="control-group">
+									<p><div class="Stars" style='--rating: {{ s.rating | stringformat:".1f" }};'></div></p>
+								</div>
+								<div class="control-group">
+									<p>{{ s.details | linebreaks }}</p>
+								</div>
+								<div class="form-actions" style="margin-bottom: 10px">
+									<p><a href="{% url 'review_edit' s.id %}">{% if s.rating > 0 %} {% trans "Change Review" %} {% else %} {% trans "review" %}{% endif %}</a></p>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer">
+				<p><a href="{% url 'delivery_index' s.id %}">{% trans "delivery" %}</a></p>
+				<p>{{ s.address }}</p>
+				<p>
+					{% if  s.final != None %}
+						{{ s.final }}
+					{% endif %}
+				</p>				
+			</div>
+		</div>
+</div>
+{% endfor %}
+{% endif %}
+<script>
+	// Показ поля для ввода отзыва
+	/*
+	function show_review(id) {
+		var div = document.getElementById('div_review'+id);
+		div.style.visibility ='visible'
+		//console.log("Возможность отправить отзыв теперь видимый");
+		var input = document.getElementById('btn_show_review'+id);
+		input.style.visibility ='hidden'
+		//console.log("Кнопка сокрыта");
+	}
+	*/
+</script>
+{% endblock content %}

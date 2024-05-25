@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "invoices" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<h2>{% trans "invoices" %}</h2>
+<p><a href="{% url 'invoice_create'%}">{% trans "Add" %}</a></p>
+<hr>
+{% if invoice.count > 0 %}
+<div class="row">
+	<table id="myTable" class="table-manager" style="width:100%">
+		<thead>
+			<tr>
+				<th><p>{% trans "datei" %}</p></th>
+				<th><p>{% trans "numb" %}</p></th>
+				<th><p>{% trans "organization" %}</p></th>
+				<th><p>{% trans "catalogs" %}</p></th>
+				<th><p></p></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for n in invoice %}
+			<tr>
+				<td>
+					<p>{{ n.datei | date:"d.m.Y"}}</p>
+				</td>
+				<td>
+					<p>{{ n.numb }}</p>
+				</td>
+				<td>
+					<p>{{ n.organization }}</p>
+				</td>
+				<td>
+					<p><a href="{% url 'catalog_index' n.id%}">{% trans "catalogs" %}</a></p>
+				</td>
+				<td>
+					<p>
+					<a href="{% url 'invoice_edit' n.id %}">{% trans "Change" %}</a> |
+					<a href="{% url 'invoice_read' n.id %}">{% trans "View" %}</a> |
+					<a onclick="return confirm('Удалить запись?')" href="{% url 'invoice_delete' n.id %}">{% trans "Delete" %}</a>
+					</p>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endif %}
+{% endblock content %}
+

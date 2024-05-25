@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}
+	{% if LANGUAGE_CODE == 'kk' %}
+		Тіркелу
+	{% elif LANGUAGE_CODE == 'en' %}
+		Sign up
+	{% else %}
+		Зарегистрироваться
+	{% endif %}
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+	<div class="col-lg-8 col-md-10 col-sm-12">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">
+					{% if LANGUAGE_CODE == 'kk' %}
+						Тіркелу
+					{% elif LANGUAGE_CODE == 'en' %}
+						Sign up
+					{% else %}
+						Зарегистрироваться
+					{% endif %}
+				</h3>
+				<form method="post" novalidate>
+					{% csrf_token %}
+					{% include 'registration/form.html' %}
+					<div class="div-button-center">
+						<button type="submit" class="btn btn-primary btn-block">
+							{% if LANGUAGE_CODE == 'kk' %}
+								Аккаунты құру
+							{% elif LANGUAGE_CODE == 'en' %}
+								Create an account
+							{% else %}
+								Создать учетную запись
+							{% endif %}
+						</button>
+					</div>
+				</form>
+			</div>
+			<div class="card-footer text-muted text-center">
+				{% if LANGUAGE_CODE == 'kk' %}
+					Есептік жазбаңыз бар ма?
+				{% elif LANGUAGE_CODE == 'en' %}
+					Already have an account?
+				{% else %}
+					У Вас уже есть учетная запись?
+				{% endif %}
+				<a href="{% url 'login' %}">
+					{% if LANGUAGE_CODE == 'kk' %}
+						Кіру
+					{% elif LANGUAGE_CODE == 'en' %}
+						Log in
+					{% else %}
+						Войти
+					{% endif %}
+				</a>
+			</div>
+		</div>
+	</div>
+ </div>
+{% endblock %}

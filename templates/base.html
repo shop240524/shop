@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+<html>
+<head>
+	<!-- Элемент meta определяет метаданные документа. -->
+	<meta charset="utf-8">
+	<!-- Мета-теги для адаптивной вёрстки -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<!-- Дополнительный JavaScript; Bootstrap в связке с Popper -->
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<!-- Формулы (https://www.mathjax.org/#gettingstarted) -->
+	<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+	<!-- <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> -->
+
+	<!-- Bootstrap CSS, JavaScript. Точнее - им требуются jQuery, Popper.js -->
+	<!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" crossorigin="anonymous"> -->
+	<!-- <script defer src="{% static 'js/popper.min.js' %}"  crossorigin="anonymous"></script> -->
+	<!-- <script defer src="{% static 'js/bootstrap.min.js' %}" crossorigin="anonymous"></script> -->
+	<!-- <script defer src="{% static 'js/jquery.min.js' %}"  ></script> -->
+
+	<!-- Стили пользователя -->
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+	<!-- SELECT (с поиском)	https://github.com/harvesthq/chosen/blob/master/LICENSE.md -->
+	<link rel="stylesheet" href="{% static 'css/choosen.css' %}" />
+	<script src="{% static 'js/choosen.js' %}"></script>
+	<!-- Favicon
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- Заголовок документа -->
+	<title>{% block title %}Default title{% endblock title %}</title>
+</head>
+<nav class="navbar navbar-expand-lg justify-content-center">
+	<div class="container">
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon">▒</span>
+		</button>
+		<div class="collapse navbar-collapse" id="mainMenu">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<a class="navbar-brand" href="{{ HTTP_HOST }}/">{% trans "Home" %}</a>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'catalog_list' %}">{% trans "catalog" %}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'news_list' %}">{% trans "newss" %}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'contact' %}">{% trans "contacts" %}</a>
+				</li>
+				{% if user.is_authenticated %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						{{ user.username }}
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							{% if request.user.groups.all.0.name == "Managers" %}
+								<li><a class="dropdown-item" href="{% url 'category_index' %}">{% trans "categorys" %}</a></li>
+								<li><a class="dropdown-item" href="{% url 'author_index' %}">{% trans "authors" %}</a></li>
+								<div class="dropdown-divider"></div>
+								<li><a class="dropdown-item" href="{% url 'organization_index' %}">{% trans "organizations" %}</a></li>
+								<li><a class="dropdown-item" href="{% url 'invoice_index' %}">{% trans "invoices" %}</a></li>
+								<li><div class="dropdown-divider"></div>
+								<li><a class="dropdown-item" href="{% url 'delivery_list' %}">{% trans "delivery" %}</a></li>
+								<li><a class="dropdown-item" href="{% url 'review_index' %}">{% trans "reviews" %}</a></li>
+								<li><a class="dropdown-item" href="{% url 'report_index' %}">{% trans "reports" %}</a></li>
+								<div class="dropdown-divider"></div>
+								<li><a class="dropdown-item" href="{% url 'news_index' %}">{% trans "newss" %}</a></li>
+							{% else %}
+								<li><a class="dropdown-item" href="{% url 'buy' %}">{% trans "My purchases" %}</a></li>
+								<li><a class="dropdown-item" href="{% url 'basket' %}">{% trans "Basket" %}</a></li>								
+
+							{% endif %}
+							<div class="dropdown-divider"></div>
+							<li><a class="dropdown-item" href="{% url 'my_account' %}">{% trans "My account" %}</a></li>
+							<li><a class="dropdown-item" href="{% url 'password_change' %}">{% trans "Change password" %}</a></li>
+							<div class="dropdown-divider"></div>
+							<li><a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}">{% trans "Log out" %}</a></li>
+					</ul>
+				</li>
+				{% if basket_count > 0 %}
+					<li class="nav-item">						
+						<a class="nav-link" href="{% url 'basket' %}">
+							<div class="container" style="position: relative; text-align: center; color: red;">
+								<!-- <a class="nav-link" href="{% url 'basket' %}">{{ basket_count }}</a>	 -->
+								<img src="{% static 'images/basket32.png' %}" alt="basket" >
+								<div href="{% url 'basket' %}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+									{{ basket_count }}
+								</div>
+							</div>
+						</a>
+					</li>
+				{% endif %}
+
+				
+				{% else %}
+				<form class="form-inline ml-auto">
+					<a href="{% url 'login' %}" class="btn btn-outline-secondary">{% trans "Log In" %}</a>
+					<a href="{% url 'signup' %}" class="btn btn-primary ml-2">{% trans "Sign up" %}</a>
+				</form>
+				{% endif %}
+				<!-- <form action="{% url 'set_language' %}" method="post"> -->
+					<!-- {% csrf_token %} -->
+					<!-- <input name="next" type="hidden" value="{{ redirect_to }}" /> -->
+					<!-- {% get_current_language as LANGUAGE_CODE %} -->
+					<!-- {% get_available_languages as LANGUAGES %} -->
+					<!-- {% get_language_info_list for LANGUAGES as languages %} -->
+					<!-- {% for language in languages %} -->
+					<!-- <button type="submit" class="btn btn-outline-warning" name="language" value="{{ language.code }}"> -->
+						<!-- {{ language.code }} -->
+					<!-- </button> -->
+					<!-- {% endfor %} -->
+				<!-- </form>				 -->
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<body>
+	<div class="container">
+		<h1>{% block header %}{% endblock header %}</h1>
+		{% block content%}{% endblock content %}
+	</div>
+</body>
+<footer class="container-fluid text-center bg-lightgray">
+	<div class="copyrights">
+		<img src="{% static 'images/logo.svg' %}" alt="logo" style="height:144px; padding: 10px;">
+	</div>
+</footer>
+<!-- Пагинация таблиц (Постраничный вывод) https://datatables.net/ -->
+<script src="{% static 'js/datatables.js' %}"></script>
+
+<!-- <link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}"> -->
+<!-- <script src= "{% static 'js/jquery.dataTables.min.js' %}"></script> -->
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- fancyBox CSS -->
+<!-- <link href="{% static 'css/jquery.fancybox.min.css' %}" rel="stylesheet"> -->
+<!-- <!-- fancyBox JS --> 
+<!-- <script src="{% static 'js/jquery.fancybox.min.js' %}" > </script> -->
+
+</html>

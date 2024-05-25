@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "Catalog details" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<div class="row justify-content-center">
+	<div class="card" style="width:100%">
+		<div class="card-header">
+			<h5>{{ catalog.category }}</h5>
+			<h4>{{ catalog.author }}</h4>
+			<h4>{{ catalog.catalog_title }}</h4>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-3">
+					{% if catalog.photo.url != None %}
+						<img class="img-center2" src="{{ catalog.photo.url}}" alt="{{ catalog.photo.url }}">
+					{% endif %}
+					<p><div class="Stars" style='--rating: {{ catalog.avg_rating| stringformat:".1f" }};'></div></p>												
+				</div>
+				<div class="col-md-9">
+					<p>{{ catalog.details | linebreaks}}</p>
+					<h4>{{ catalog.price | stringformat:"1.0f" }} ₽</h4>	
+				</div>				
+			</div>
+		</div>
+		<div class="card-footer">
+		</div>
+	</div>	
+	<div class="div-button-center">
+		<a class="btn btn-info" style="width:120px" href="{% url 'index'%}">{% trans "Back" %}</a> 	
+	</div>
+</div>
+{% if review.count > 0 %}
+	<div class="row justify-content-center">
+		<h2 class="text-center">{% trans "reviews" %}</h2>
+	</div>
+	{% for r in review %}
+		{% if r.rating > 0 %}
+		<div class="row justify-content-center">
+			<div class="card" style="width:100%">
+				<div class="card-header">
+					<!-- <h6>{% trans "rating" %}: {{ r.rating }}</h6> -->
+					<p><div class="Stars" style='--rating: {{ r.rating | stringformat:".1f" }};'></div></p>
+				</div>
+				<div class="card-body">
+					<p>{{ r.details | linebreaks }}</p>
+				</div>
+				<div class="card-footer">
+					<p>{{ r.saleday | date:"d.m.Y H:i"}}</p>
+					<p>{{ r.username }}</p>			
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	{% endfor %}
+{% else %}
+	<div class="row justify-content-center">
+		<h5>{% trans "No reviews yet" %}</h5>
+	</div">
+{% endif %}
+
+{% endblock content %}

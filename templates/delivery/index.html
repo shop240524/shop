@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "deliverys" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<div id="print_content">
+	<h2>{% trans "Sale" %}</h2>
+	<hr>
+	<h4>{{ view_sale.saleday| date:"d.m.Y"  }}</h4>
+	<h4>{{ view_sale.first_name }} {{ view_sale.last_name }} ({{ view_sale.username }})</h4>
+	<p>{{ view_sale.category }}</p>
+	<p>{{ view_sale.author }}</p>
+	<p>{{ view_sale.title }}</p>
+	<p>{{ view_sale.price | stringformat:"1.0f" }} ₽</p>
+	<hr>
+	<h2>{% trans "delivery" %}</h2>
+	{% if delivery.count > 0 %}
+	<p>{{ view_sale.address }}</p>
+	<div class="row">
+		<table id="myTable" class="table-manager" style="width:100%">
+			<thead>
+				<tr>
+					<th><p>{% trans "deliveryday" %}</p></th>
+					<th><p>{% trans "movement" %}</p></th>
+					<th><p>{% trans "delivery_details" %}</p></th>
+					{% if request.user.groups.all.0.name == "Managers" %}
+					<th class="hide_for_print_element"><p><a href="{% url 'delivery_create' view_sale.id %}">{% trans "Add" %}</a></p></th>
+					{% endif %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for n in delivery %}
+				<tr>
+					<td><p>{{ n.deliveryday | date:"d.m.Y H:i" }}</p></td>
+					<td><p>{{ n.movement }}</p></td>
+					<!-- <td><p>{{ n.details | linebreaks }}</p></td> -->
+					<td>{{ n.details | linebreaks }}</td>
+					{% if request.user.groups.all.0.name == "Managers" %}
+					<td class="hide_for_print_element">
+						<p>
+						<a href="{% url 'delivery_edit' n.id %}">{% trans "Change" %}</a> |
+						<a href="{% url 'delivery_read' n.id %}">{% trans "View" %}</a> |
+						<a onclick="return confirm('Удалить запись?')" href="{% url 'delivery_delete' n.id %}">{% trans "Delete" %}</a>
+						</p>
+					</td>
+					{% endif %}
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% else %}
+		{% if request.user.groups.all.0.name == "Managers" %}
+		<a href="{% url 'delivery_create' view_sale.id %}">{% trans "Add" %}</a>
+		{% endif %}
+	{% endif %}
+</div>
+<div class="div-button-center">
+	<button class="btn btn-info" name = "print" id ="print" onclick='printDiv("print_content")' style="text-align: center;width:150px">Печать</button>
+	<!-- <a class="btn btn-outline-info" style="width:150px" href="{% url 'delivery_list'%}">{% trans "Back" %}</a> -->
+	<button onclick="history.back()" class="btn btn-outline-info" style="width:150px">{% trans "Back" %}</button>
+</div>
+<script>
+	function printDiv(divName) {
+		// Печать контейнера div
+		// Оригинальный контент
+		var originalContents = document.body.innerHTML;
+		// Скрываемый класс
+		var collection = document.getElementsByClassName("hide_for_print_element");
+		for(var i=0; i<collection.length; i++)collection[i].style.display='none';
+		// Область печати
+		var printContents = document.getElementById(divName).innerHTML;
+		// Вывод на печать			
+		document.body.innerHTML = printContents;
+		window.print();
+		// Возврат документа в исходное состояние
+		document.body.innerHTML = originalContents;
+	}
+</script>
+{% endblock content %}

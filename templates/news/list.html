@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "newss" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<div class="div-width-100-text-center">
+	<h3>{% trans "newss" %}</h3>
+</div>
+{% if news.count > 0 %}
+	<form method="POST" enctype="multipart/form-data" style="margin-top: 10px; margin-bottom: 10px;">
+		{% csrf_token %}
+		<input type="search" value="{{news_search}}" name="news_search">		
+		<button class="btn btn-outline-success" name="searchBtn" style="width:120px;">{% trans "Search" %}</button>
+		<button class="btn btn-outline-primary" name="resetBtn" type="submit" onClick="window.location.reload();" style="width:120px;">{% trans "Reset" %}</button>
+	</form>
+	<div class="row">
+		{% for n in news %}
+			<!-- <div class="card"> -->
+			<div class="col-lg-3 col-md-4 col-6 thumb" style="margin-top: 5px;">
+				<div class="card-header">
+					<p>{{ n.daten | date:"d.m.Y H:i" }}<p>
+				</div>
+				<div class="card-body">	
+					<div class="row">			
+						{% if n.photo.url != None %}
+							<img class="img-center2" src="{{ n.photo.url}}" alt="{{ n.photo.url }}">
+						{% endif %}
+					</div>					
+					<!-- <div class="row"> -->
+						<!-- <div class="col-md-8"> -->
+							<!-- <p>{{ n.details | linebreaks }}</p> -->
+						<!-- </div>								 -->
+						<!-- <div class="col-md-4"> -->
+							<!-- {% if n.photo.url != None %} -->
+								<!-- <img style="width:100%; max-width:400px;" src="{{ n.photo.url}}" alt="{{ n.photo.url }}"> -->
+							<!-- {% endif %} -->
+						<!-- </div> -->
+					<!-- </div> -->
+				</div>
+				<div class="card-footer">
+					<h5><a href="{% url 'news_read' n.id %}">{{ n.news_title }}</a></h5>
+				</div>
+			</div>
+		{% endfor %}	
+	</div>
+{% endif %}
+{% endblock content %}
+

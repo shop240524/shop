@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "List" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<h2>{% trans "categorys" %}</h2>
+<p><a href="{% url 'category_create'%}">{% trans "Add" %}</a></p>
+<hr>
+{% if category.count > 0 %}
+<div class="row">
+	<table id="myTable" class="table-manager" style="width:100%">
+		<thead>
+			<tr>
+				<th><p>{% trans "category_title" %}</p></th>
+				<th><p></p></th>				
+			</tr>
+		</thead>
+		<tbody>
+			{% for e in category %}
+			<tr>
+				<td><p>{{ e.category_title }}</p></td>	
+				<td>						
+					<p>
+					<a href="{% url 'category_edit' e.id %}">{% trans "Change" %}</a> |
+					<a href="{% url 'category_read' e.id %}">{% trans "View" %}</a> |
+					<a onclick="return confirm('Удалить запись?')" href="{% url 'category_delete' e.id %}">{% trans "Delete" %}</a>
+					</p>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endif %}
+{% endblock content %}
+

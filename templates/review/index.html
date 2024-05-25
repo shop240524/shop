@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "reviews" %}{% endblock title %}
+{% block header %}{% endblock header %}
+{% block content %}
+<h2>{% trans "reviews" %}</h2>
+{% if review.count > 0 %}
+<div class="row">
+	<table id="myTable" class="table-manager" style="width:100%">
+		<thead>
+			<tr>
+				<th><p>{% trans "saleday" %}</p></th>
+				<th><p>{% trans "catalog" %}</p></th>
+				<th><p>{% trans "rating" %}</p></th>
+				<th><p>{% trans "review_details" %}</th>
+				<th><p></p></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for r in review %}
+			{% if r.rating != None %}
+			<tr>
+				<td><p>{{ r.saleday | date:"d.m.Y H:i"}}<br>{{ r.username }}</p></td>
+				<td><p>{{ r.catalog }}</p></td>
+				<td><p>				
+					{% if r.rating != None %}
+						<div class="Stars" style='--rating: {{ r.rating | stringformat:".1f" }};'></div>
+					{% endif %}									
+				</p></td>
+				<td><p>{{ r.details | linebreaks }}</p></td>
+				<td>
+					<form method="post">
+						{% csrf_token %}
+						<button type="submit" onclick="return confirm('Удалить запись?')" name="btn{{ r.id }}" id="btn_id{{ r.id }}" class="btn btn-outline-success" >{% trans "Delete" %}</button>
+						<input hidden type="text" name="sale_id" size="0" value="{{ r.id }}">
+					</form>
+				</td>
+			</tr>
+			{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endif %}
+{% endblock content %}
