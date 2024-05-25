@@ -14,6 +14,8 @@
 	<p>{{ view_sale.price | stringformat:"1.0f" }} ₽</p>
 	<hr>
 	<h2>{% trans "delivery" %}</h2>
+	<p class="hide_for_print_element"><a href="{% url 'delivery_create' view_sale.id %}">{% trans "Add" %}</a></p>
+	<hr>	
 	{% if delivery.count > 0 %}
 	<p>{{ view_sale.address }}</p>
 	<div class="row">
@@ -24,7 +26,7 @@
 					<th><p>{% trans "movement" %}</p></th>
 					<th><p>{% trans "delivery_details" %}</p></th>
 					{% if request.user.groups.all.0.name == "Managers" %}
-					<th class="hide_for_print_element"><p><a href="{% url 'delivery_create' view_sale.id %}">{% trans "Add" %}</a></p></th>
+					<th class="hide_for_print_element"><p></p></th>
 					{% endif %}
 				</tr>
 			</thead>
